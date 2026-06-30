@@ -1,0 +1,263 @@
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local CoreGui = game:GetService("CoreGui")
+local TweenService = game:GetService("TweenService")
+local Players = game:GetService("Players")
+
+-- Funktion, die das Menü erstellt
+local function CreateMenu()
+    local screenGui = Instance.new("ScreenGui")
+    screenGui.Name = "RVNG_Menu_" .. tostring(math.random(1000, 9999))
+    screenGui.ResetOnSpawn = false
+
+    -- In CoreGui oder PlayerGui laden
+    local success, err = pcall(function()
+        screenGui.Parent = CoreGui
+    end)
+    if not success then
+        screenGui.Parent = Players.LocalPlayer:WaitForChild("PlayerGui")
+    end
+
+    -- Hauptfenster (Größe für alle 6 Buttons angepasst: 285 -> 330)
+    local frame = Instance.new("Frame")
+    frame.Size = UDim2.new(0, 230, 0, 330)
+    frame.Position = UDim2.new(0.4 + (math.random(-10, 10)/100), 0, 0.2 + (math.random(-10, 10)/100), 0)
+    frame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+    frame.BorderSizePixel = 0
+    frame.Active = true
+    frame.Draggable = true
+    frame.Parent = screenGui
+
+    local frameCorner = Instance.new("UICorner")
+    frameCorner.CornerRadius = UDim.new(0, 9)
+    frameCorner.Parent = frame
+
+    -- Titel
+    local title = Instance.new("TextLabel")
+    title.Size = UDim2.new(1, 0, 0, 35)
+    title.BackgroundTransparency = 1
+    title.TextColor3 = Color3.fromRGB(255, 170, 0) -- Gold/Orange
+    title.TextSize = 15
+    title.Font = Enum.Font.GothamBold
+    title.Text = "RVNG'S Farm"
+    title.Parent = frame
+
+    -- --- BUTTON 1: Mega Replay Add Speed ---
+    local speedButton = Instance.new("TextButton")
+    speedButton.Size = UDim2.new(0, 200, 0, 40)
+    speedButton.Position = UDim2.new(0.5, -100, 0, 40)
+    speedButton.BackgroundColor3 = Color3.fromRGB(180, 50, 50)
+    speedButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    speedButton.TextSize = 13
+    speedButton.Font = Enum.Font.GothamBold
+    speedButton.Text = "OP Add Speed: OFF"
+    speedButton.Parent = frame
+
+    local speedCorner = Instance.new("UICorner")
+    speedCorner.CornerRadius = UDim.new(0, 6)
+    speedCorner.Parent = speedButton
+
+    -- --- BUTTON 2: Auto Rebirth ---
+    local rebirthButton = Instance.new("TextButton")
+    rebirthButton.Size = UDim2.new(0, 200, 0, 40)
+    rebirthButton.Position = UDim2.new(0.5, -100, 0, 85)
+    rebirthButton.BackgroundColor3 = Color3.fromRGB(180, 50, 50)
+    rebirthButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    rebirthButton.TextSize = 13
+    rebirthButton.Font = Enum.Font.GothamBold
+    rebirthButton.Text = "Auto Rebirth: OFF"
+    rebirthButton.Parent = frame
+
+    local rebirthCorner = Instance.new("UICorner")
+    rebirthCorner.CornerRadius = UDim.new(0, 6)
+    rebirthCorner.Parent = rebirthButton
+
+    -- --- BUTTON 3: Auto TP Wins W1 ---
+    local tpW1Button = Instance.new("TextButton")
+    tpW1Button.Size = UDim2.new(0, 200, 0, 40)
+    tpW1Button.Position = UDim2.new(0.5, -100, 0, 130)
+    tpW1Button.BackgroundColor3 = Color3.fromRGB(180, 50, 50)
+    tpW1Button.TextColor3 = Color3.fromRGB(255, 255, 255)
+    tpW1Button.TextSize = 13
+    tpW1Button.Font = Enum.Font.GothamBold
+    tpW1Button.Text = "Auto TP Wins W1: OFF"
+    tpW1Button.Parent = frame
+
+    local tpW1Corner = Instance.new("UICorner")
+    tpW1Corner.CornerRadius = UDim.new(0, 6)
+    tpW1Corner.Parent = tpW1Button
+
+    -- --- BUTTON 4: Auto TP Wins W2 (Neu hinzugefügt) ---
+    local tpW2Button = Instance.new("TextButton")
+    tpW2Button.Size = UDim2.new(0, 200, 0, 40)
+    tpW2Button.Position = UDim2.new(0.5, -100, 0, 175)
+    tpW2Button.BackgroundColor3 = Color3.fromRGB(180, 50, 50)
+    tpW2Button.TextColor3 = Color3.fromRGB(255, 255, 255)
+    tpW2Button.TextSize = 13
+    tpW2Button.Font = Enum.Font.GothamBold
+    tpW2Button.Text = "Auto TP Wins W2: OFF"
+    tpW2Button.Parent = frame
+
+    local tpW2Corner = Instance.new("UICorner")
+    tpW2Corner.CornerRadius = UDim.new(0, 6)
+    tpW2Corner.Parent = tpW2Button
+
+    -- --- BUTTON 5: Open Infinite Yield ---
+    local iyButton = Instance.new("TextButton")
+    iyButton.Size = UDim2.new(0, 200, 0, 40)
+    iyButton.Position = UDim2.new(0.5, -100, 0, 220)
+    iyButton.BackgroundColor3 = Color3.fromRGB(60, 30, 110)
+    iyButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    iyButton.TextSize = 13
+    iyButton.Font = Enum.Font.GothamBold
+    iyButton.Text = "Open Infinite Yield"
+    iyButton.Parent = frame
+
+    local iyCorner = Instance.new("UICorner")
+    iyCorner.CornerRadius = UDim.new(0, 6)
+    iyCorner.Parent = iyButton
+
+    -- --- BUTTON 6: Open New Menu ---
+    local cloneButton = Instance.new("TextButton")
+    cloneButton.Size = UDim2.new(0, 200, 0, 35)
+    cloneButton.Position = UDim2.new(0.5, -100, 0, 270)
+    cloneButton.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+    cloneButton.TextColor3 = Color3.fromRGB(220, 220, 220)
+    cloneButton.TextSize = 12
+    cloneButton.Font = Enum.Font.GothamBold
+    cloneButton.Text = "➕ Open New Menu"
+    cloneButton.Parent = frame
+
+    local cloneCorner = Instance.new("UICorner")
+    cloneCorner.CornerRadius = UDim.new(0, 6)
+    cloneCorner.Parent = cloneButton
+
+
+    -- --- LOGIK FÜR DIE FUNKTIONEN ---
+
+    local function getSpeedEvent()
+        return ReplicatedStorage:FindFirstChild("Events") and ReplicatedStorage.Events:FindFirstChild("AddSpeed")
+    end
+
+    local function getRebirthEvent()
+        return ReplicatedStorage:FindFirstChild("Events") and ReplicatedStorage.Events:FindFirstChild("RequestRebirth")
+    end
+
+    -- Speed Logic
+    local speedActive = false
+    speedButton.MouseButton1Click:Connect(function()
+        speedActive = not speedActive
+        if speedActive then
+            TweenService:Create(speedButton, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(50, 180, 50)}):Play()
+            speedButton.Text = "OP Add Speed: ON"
+            for i = 1, 10 do
+                task.spawn(function()
+                    while speedActive do
+                        local ev = getSpeedEvent()
+                        if ev then ev:FireServer() end
+                        task.wait()
+                    end
+                end)
+            end
+        else
+            TweenService:Create(speedButton, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(180, 50, 50)}):Play()
+            speedButton.Text = "OP Add Speed: OFF"
+        end
+    end)
+
+    -- Auto Rebirth Logic
+    local rebirthActive = false
+    rebirthButton.MouseButton1Click:Connect(function()
+        rebirthActive = not rebirthActive
+        if rebirthActive then
+            TweenService:Create(rebirthButton, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(50, 180, 50)}):Play()
+            rebirthButton.Text = "Auto Rebirth: ON"
+            task.spawn(function()
+                while rebirthActive do
+                    local ev = getRebirthEvent()
+                    if ev then ev:InvokeServer() end
+                    task.wait()
+                end
+            end)
+        else
+            TweenService:Create(rebirthButton, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(180, 50, 50)}):Play()
+            rebirthButton.Text = "Auto Rebirth: OFF"
+        end
+    end)
+
+    -- Teleport Loop Logik für World 1
+    local tpW1Active = false
+    local posW1 = Vector3.new(406, 219, 4388)
+
+    tpW1Button.MouseButton1Click:Connect(function()
+        tpW1Active = not tpW1Active
+        if tpW1Active then
+            -- Verhindert, dass beide TPs gleichzeitig an sind
+            if tpW2Active then tpW2Button:Click() end
+            
+            TweenService:Create(tpW1Button, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(50, 180, 50)}):Play()
+            tpW1Button.Text = "Auto TP Wins W1: ON"
+            
+            task.spawn(function()
+                while tpW1Active do
+                    local character = Players.LocalPlayer.Character
+                    if character and character:FindFirstChild("HumanoidRootPart") then
+                        character:PivotTo(CFrame.new(posW1))
+                    end
+                    task.wait(0.5)
+                end
+            end)
+        else
+            TweenService:Create(tpW1Button, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(180, 50, 50)}):Play()
+            tpW1Button.Text = "Auto TP Wins W1: OFF"
+        end
+    end)
+
+    -- Teleport Loop Logik für World 2
+    local tpW2Active = false
+    local posW2 = Vector3.new(-1631, 93, 17347)
+
+    tpW2Button.MouseButton1Click:Connect(function()
+        tpW2Active = not tpW2Active
+        if tpW2Active then
+            -- Verhindert, dass beide TPs gleichzeitig an sind
+            if tpW1Active then tpW1Button:Click() end
+            
+            TweenService:Create(tpW2Button, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(50, 180, 50)}):Play()
+            tpW2Button.Text = "Auto TP Wins W2: ON"
+            
+            task.spawn(function()
+                while tpW2Active do
+                    local character = Players.LocalPlayer.Character
+                    if character and character:FindFirstChild("HumanoidRootPart") then
+                        character:PivotTo(CFrame.new(posW2))
+                    end
+                    task.wait(0.5)
+                end
+            end)
+        else
+            TweenService:Create(tpW2Button, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(180, 50, 50)}):Play()
+            tpW2Button.Text = "Auto TP Wins W2: OFF"
+        end
+    end)
+
+    -- Infinite Yield Logic
+    iyButton.MouseButton1Click:Connect(function()
+        TweenService:Create(iyButton, TweenInfo.new(0.1), {BackgroundColor3 = Color3.fromRGB(90, 50, 160)}):Play()
+        task.wait(0.1)
+        TweenService:Create(iyButton, TweenInfo.new(0.1), {BackgroundColor3 = Color3.fromRGB(60, 30, 110)}):Play()
+        task.spawn(function()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"))()
+        end)
+    end)
+
+    -- Duplicate Menu Logic
+    cloneButton.MouseButton1Click:Connect(function()
+        TweenService:Create(cloneButton, TweenInfo.new(0.1), {BackgroundColor3 = Color3.fromRGB(70, 70, 70)}):Play()
+        task.wait(0.1)
+        TweenService:Create(cloneButton, TweenInfo.new(0.1), {BackgroundColor3 = Color3.fromRGB(45, 45, 45)}):Play()
+        CreateMenu()
+    end)
+end
+
+-- Startet das Menü
+CreateMenu()
